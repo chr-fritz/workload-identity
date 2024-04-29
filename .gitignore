@@ -1,0 +1,8 @@
+*.iml
+.idea/
+*.key
+*-key.pem
+*-secret.yaml
+*-secrets.yaml
+*-secret.yml
+*-secrets.yml
