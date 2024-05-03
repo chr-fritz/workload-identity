@@ -10,8 +10,9 @@ data:
     hello:
       backend:
         url: http://backend-service/hello
-    middleware:
+    oauth2:
       serviceAccountTokenPath: /var/run/secrets/kubernetes.io/keycloak/workload-id
+      useKubernetesServiceAccount: true
     server:
       error:
         include-message: always

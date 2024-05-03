@@ -8,7 +8,8 @@ import java.nio.file.Path;
 
 @Data
 @Configuration
-@ConfigurationProperties(prefix = "middleware")
+@ConfigurationProperties(prefix = "oauth2")
 public class ConfigProperties {
     private Path serviceAccountTokenPath;
+    private boolean useKubernetesServiceAccount;
 }
