@@ -70,6 +70,8 @@ spec:
               mountPath: /config/
             - name: truststore
               mountPath: /truststore/
+            - name: workload-id-token
+              mountPath: /var/run/secrets/kubernetes.io/keycloak/
       volumes:
         - name: app-config
           configMap:
@@ -78,6 +80,13 @@ spec:
             items:
               - key: application-k8s.yaml
                 path: application-k8s.yaml
+        - name: workload-id-token
+          projected:
+            sources:
+              - serviceAccountToken:
+                  path: workload-id
+                  expirationSeconds: 900
+                  audience: "https://keycloak-192-168-107-4.nip.io/realms/master"
         - name: truststore
           emptyDir: { }
         - name: ca-certificates
