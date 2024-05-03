@@ -1,24 +1,20 @@
 package de.qaware.security.lab.workloadid.middleware.server;
 
-import org.apache.hc.client5.http.classic.HttpClient;
-import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
+import org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 public class BeanConfiguration {
 
     @Bean
-    HttpClient httpClient() {
-        return HttpClientBuilder.create().build();
-    }
-
-    @Bean
-    RestTemplate rest(HttpClient httpClient, TokenForwardHttpRequestInterceptor tokenForwardInterceptor) {
-        RestTemplate rest = new RestTemplate(new HttpComponentsClientHttpRequestFactory(httpClient));
-        rest.getInterceptors().add(tokenForwardInterceptor);
-        return rest;
+    public WebClient webClient(OAuth2AuthorizedClientManager authorizedClientManager) {
+        ServletOAuth2AuthorizedClientExchangeFilterFunction filter =
+            new ServletOAuth2AuthorizedClientExchangeFilterFunction(authorizedClientManager);
+        return WebClient.builder()
+            .apply(filter.oauth2Configuration())
+            .build();
     }
 }
