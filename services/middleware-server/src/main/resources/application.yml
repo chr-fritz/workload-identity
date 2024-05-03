@@ -9,3 +9,4 @@ hello:
 logging:
   level:
     de.qaware.security.lab.workloadid.middleware.server: DEBUG
+    reactor.netty.http.client.HttpClient: DEBUG

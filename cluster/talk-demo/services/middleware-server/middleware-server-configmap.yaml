@@ -20,6 +20,7 @@ data:
         org.springframework.security: DEBUG
         org.springframework.security.web.FilterChainProxy: WARN
         org.springframework.security.web.authentication.AnonymousAuthenticationFilter: WARN
+        reactor.netty.http.client.HttpClient: DEBUG
     spring:
       security:
         oauth2:
