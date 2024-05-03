@@ -44,11 +44,13 @@ spec:
             mountPath: /ca-certs
             readOnly: true
     proxy: edge
-    spi:
-      truststorePassword: changeit
-      truststoreFilename: /truststore/truststore.jks
-      hostnameVerificationPolicy: WILDCARD
     extraEnvVars:
+      - name: KEYCLOAK_SPI_TRUSTSTORE_FILE
+        value: /truststore/truststore.jks
+      - name: KEYCLOAK_SPI_TRUSTSTORE_PASSWORD
+        value: changeit
+      - name: KEYCLOAK_SPI_TRUSTSTORE_FILE_HOSTNAME_VERIFICATION_POLICY
+        value: ANY
       - name: KC_HOSTNAME_URL
         value: https://keycloak-192-168-107-4.nip.io
     ingress:
