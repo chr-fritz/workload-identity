@@ -1,0 +1,11 @@
+management:
+  endpoint:
+    health:
+      probes:
+        enabled: true
+hello:
+  backend:
+    url: http://localhost:8081/hello
+logging:
+  level:
+    de.qaware.security.lab.workloadid.middleware.server: DEBUG

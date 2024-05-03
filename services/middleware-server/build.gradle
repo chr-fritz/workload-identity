@@ -1,0 +1,59 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.2.5'
+    id 'io.spring.dependency-management' version '1.1.4'
+    id 'com.google.cloud.tools.jib' version '3.4.2'
+}
+
+group = 'de.qaware.security.lab.oidc'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '21'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.apache.httpcomponents.client5:httpclient5:5.3.1'
+    implementation 'com.nimbusds:oauth2-oidc-sdk:11.10.1'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+jib {
+    from {
+        platforms {
+            platform {
+                os = "linux"
+                architecture = "arm64"
+            }
+            platform {
+                os = "linux"
+                architecture = "amd64"
+            }
+        }
+    }
+    to {
+        image = "ghcr.io/$System.env.GITHUB_REPOSITORY_OWNER/workload-id-middleware-server"
+        tags = [version, "latest"]
+    }
+    container {
+        mainClass = 'de.qaware.security.lab.workloadid.middleware.server.MiddlewareServerApplication'
+        ports = ['8080/tcp']
+    }
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
