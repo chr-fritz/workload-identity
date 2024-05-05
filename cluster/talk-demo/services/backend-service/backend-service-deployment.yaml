@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: backend-service
-  namespace: demo
   labels:
     app: backend-service
 spec:
@@ -14,8 +13,10 @@ spec:
       labels:
         app: backend-service
     spec:
+      serviceAccountName: backend-service
       containers:
         - name: backend-service
+          # image: ealen/echo-server:latest
           image: ghcr.io/chr-fritz/seclab-backend-service:latest
           imagePullPolicy: Always
           ports:

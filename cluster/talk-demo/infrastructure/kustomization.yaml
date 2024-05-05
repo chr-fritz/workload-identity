@@ -1,0 +1,10 @@
+commonLabels:
+  app.kubernetes.io/part-of: workload-id-talk-demo
+
+namespace: demo
+
+resources:
+  - oidc-viewer-clusterrolebinding.yaml
+  - namespace.yaml
+  - bitnami-helmrepo.yaml
+  - keycloak-helmrelease.yaml

@@ -1,0 +1,8 @@
+commonLabels:
+  app.kubernetes.io/part-of: workload-id-talk-demo
+
+namespace: demo
+
+resources:
+  - backend-service
+  - middleware-server

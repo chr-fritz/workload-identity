@@ -1,0 +1,9 @@
+commonLabels:
+  app: backend-service
+  app.kubernetes.io/instance: backend-service
+  app.kubernetes.io/name: backend-service
+
+resources:
+  - backend-service-serviceaccount.yaml
+  - backend-service-service.yaml
+  - backend-service-deployment.yaml
