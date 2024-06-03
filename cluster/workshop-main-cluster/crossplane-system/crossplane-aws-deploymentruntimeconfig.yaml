@@ -1,0 +1,9 @@
+apiVersion: pkg.crossplane.io/v1beta1
+kind: DeploymentRuntimeConfig
+metadata:
+  name: crossplane-aws-deploymentruntimeconfig
+spec:
+  serviceAccountTemplate:
+    metadata:
+      annotations:
+        eks.amazonaws.com/role-arn: arn:aws:iam::730335410257:role/cloudland-main-cluster-crossplane-aws-iam

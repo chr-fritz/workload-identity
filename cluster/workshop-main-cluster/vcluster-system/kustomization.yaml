@@ -1,0 +1,5 @@
+namespace: vcluster-system
+resources:
+  - namespace.yaml
+  - cluster-api-operator-repository.yaml
+  - cluster-api-operator-release.yaml

@@ -1,0 +1,67 @@
+# nonk8s
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: cloudland-main-cluster
+  region: eu-central-1
+  version: "1.29"
+
+vpc:
+  clusterEndpoints:
+    privateAccess: true
+    # Initially true to set up the cluster. Else eksctl would not be able to connect to the cluster anymore.
+    # Afterwards this can be changed via the AWS Management Console as described in the Readme.
+    publicAccess: true
+  id: vpc-0ec1d1c3ddf6ce669
+  subnets:
+    private:
+      eu-central-1a:
+        id: subnet-080d994b9ab57584d
+      eu-central-1b:
+        id: subnet-0aa1425adc20aa112
+      eu-central-1c:
+        id: subnet-010f9bfe190376cd6
+  autoAllocateIPv6: true
+  nat:
+    gateway: Single
+
+nodeGroups:
+  - name: default-a
+    instanceType: mixed
+    desiredCapacity: 3
+    minSize: 1
+    maxSize: 5
+    amiFamily: Bottlerocket
+    privateNetworking: true
+    instancesDistribution:
+      maxPrice: 0.03
+      instanceTypes: [ "t4g.medium", "t4g.small", "t4g.large" ] # At least one instance type should be specified
+      onDemandBaseCapacity: 0
+      onDemandPercentageAboveBaseCapacity: 50
+      spotInstancePools: 3
+    iam:
+      withAddonPolicies:
+        externalDNS: true
+        certManager: true
+        awsLoadBalancerController: true
+    updateConfig:
+      maxUnavailablePercentage: 10
+
+iam:
+  withOIDC: true
+  serviceAccounts:
+    - metadata:
+        name: aws-load-balancer-controller
+        namespace: kube-system
+      attachPolicyARNs:
+        - "arn:aws:iam::730335410257:policy/AWSLoadBalancerControllerIAMPolicy"
+    - metadata:
+        name: ecr-credentials-sync
+        namespace: flux-system
+      attachPolicyARNs:
+        - "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+
+addons:
+  - name: aws-ebs-csi-driver
+  - name: eks-pod-identity-agent

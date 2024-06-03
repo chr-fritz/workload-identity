@@ -1,0 +1,10 @@
+namespace: crossplane-system
+resources:
+  - namespace.yaml
+  - crossplane-stable-repo.yaml
+  - crossplane-release.yaml
+  - aws-default-providerconfig.yaml
+  - crossplane-aws-deploymentruntimeconfig.yaml
+  - aws-iam-crossplane-provider.yaml
+  - aws-ecr-crossplane-provider.yaml
+  - aws-route53-crossplane-provider.yaml

@@ -1,0 +1,9 @@
+namespace: kube-system
+
+resources:
+  - aws-eks-helmrepo.yaml
+  - jetstack-helmrepo.yaml
+  - aws-lb-controller-release.yaml
+  - cert-manager-release.yaml
+  - ingress-nginx-helmrepo.yaml
+  - ingress-nginx-release.yaml

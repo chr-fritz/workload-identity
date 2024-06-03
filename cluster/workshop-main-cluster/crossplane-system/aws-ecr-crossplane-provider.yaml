@@ -1,0 +1,8 @@
+apiVersion: pkg.crossplane.io/v1
+kind: Provider
+metadata:
+  name: provider-aws-ecr
+spec:
+  package: xpkg.upbound.io/upbound/provider-aws-ecr:v1.6.0
+  runtimeConfigRef:
+    name: crossplane-aws-deploymentruntimeconfig
