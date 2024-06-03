@@ -1,0 +1,42 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: vcluster-participant
+rules:
+  - verbs:
+      - "*"
+    resources:
+      - secrets
+      - pods/portforward
+    apiGroups:
+      - ""
+  - verbs:
+      - get
+      - list
+      - watch
+    resources:
+      - statefulsets
+      - deployments
+    apiGroups:
+      - apps
+  - verbs:
+      - get
+      - list
+      - watch
+    resources:
+      - pods
+      - services
+    apiGroups:
+      - ""
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: vcluster-participant-gh-actions
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: vcluster-participant
+subjects:
+  - kind: User
+    name: gh-action-add-participant
