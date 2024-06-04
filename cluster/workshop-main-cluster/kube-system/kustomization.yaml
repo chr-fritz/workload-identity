@@ -1,6 +1,7 @@
 namespace: kube-system
 
 resources:
+  - aws-auth-configmap.yaml
   - aws-eks-helmrepo.yaml
   - jetstack-helmrepo.yaml
   - aws-lb-controller-release.yaml

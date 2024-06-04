@@ -1,0 +1,11 @@
+apiVersion: iam.aws.upbound.io/v1beta1
+kind: OpenIDConnectProvider
+metadata:
+  name: github
+spec:
+  forProvider:
+    clientIdList:
+      - sts.amazonaws.com
+    thumbprintList:
+      - 1b511abead59c6ce207077c0bf0e0043b1382612
+    url: https://token.actions.githubusercontent.com

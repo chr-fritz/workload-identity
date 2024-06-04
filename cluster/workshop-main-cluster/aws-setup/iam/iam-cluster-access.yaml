@@ -1,0 +1,22 @@
+apiVersion: iam.aws.upbound.io/v1beta1
+kind: Policy
+metadata:
+  name: eks-cluster-access
+spec:
+  forProvider:
+    policy: |
+      {
+          "Version": "2012-10-17",
+          "Statement": [
+              {
+                  "Sid": "EksClusterAccess",
+                  "Effect": "Allow",
+                  "Action": [
+                      "eks:AccessKubernetesApi",
+                      "eks:DescribeCluster",
+                      "eks:ListClusters"
+                  ],
+                  "Resource": "*"
+              }
+          ]
+      }
