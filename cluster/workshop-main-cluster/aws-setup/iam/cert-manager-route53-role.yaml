@@ -1,0 +1,50 @@
+apiVersion: iam.aws.upbound.io/v1beta1
+kind: Role
+metadata:
+  name: cert-manager-route53
+spec:
+  forProvider:
+    assumeRolePolicy: |
+      {
+          "Version": "2012-10-17",
+          "Statement": [
+              {
+                  "Effect": "Allow",
+                  "Action": "sts:AssumeRoleWithWebIdentity",
+                  "Principal": {
+                      "Federated": "arn:aws:iam::730335410257:oidc-provider/oidc.eks.eu-central-1.amazonaws.com/id/16863A4F160277A9C0E1AC5E63C373EB"
+                  },
+                  "Condition": {
+                      "StringLike": {
+                          "oidc.eks.eu-central-1.amazonaws.com/id/16863A4F160277A9C0E1AC5E63C373EB:sub": "system:serviceaccount:kube-system:cert-manager*"
+                      }
+                  }
+              }
+          ]
+      }
+    inlinePolicy:
+      - name: cert-manager-dns-route53
+        policy: |
+          {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Effect": "Allow",
+                "Action": "route53:GetChange",
+                "Resource": "arn:aws:route53:::change/*"
+              },
+              {
+                "Effect": "Allow",
+                "Action": [
+                  "route53:ChangeResourceRecordSets",
+                  "route53:ListResourceRecordSets"
+                ],
+                "Resource": "arn:aws:route53:::hostedzone/*"
+              },
+              {
+                "Effect": "Allow",
+                "Action": "route53:ListHostedZonesByName",
+                "Resource": "*"
+              }
+            ]
+          }

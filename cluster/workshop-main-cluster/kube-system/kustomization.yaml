@@ -8,3 +8,5 @@ resources:
   - cert-manager-release.yaml
   - ingress-nginx-helmrepo.yaml
   - ingress-nginx-release.yaml
+  - cluster-issuer.yaml
+  - default-certificate.yaml

@@ -1,0 +1,17 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: default
+spec:
+  acme:
+    privateKeySecretRef:
+      name: workload-id-default-issuer
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: msocve73qum@temp.mailbox.org
+    solvers:
+      - selector:
+          dnsZones:
+            - workload-id.chr-fritz.de
+        dns01:
+          route53:
+            region: eu-central-1

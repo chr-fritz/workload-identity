@@ -1,0 +1,8 @@
+apiVersion: route53.aws.upbound.io/v1beta1
+kind: Zone
+metadata:
+  name: primary
+spec:
+  forProvider:
+    name: workload-id.chr-fritz.de
+    region: eu-central-1

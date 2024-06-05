@@ -18,3 +18,6 @@ spec:
     timeout: 5m
   values:
     installCRDs: "true"
+    serviceAccount:
+      annotations:
+        eks.amazonaws.com/role-arn: "arn:aws:iam::730335410257:role/cert-manager-route53"

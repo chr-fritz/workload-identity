@@ -23,6 +23,7 @@ spec:
         default: "true"
         enabled: "true"
       extraArgs:
+        default-ssl-certificate: kube-system/default-workload-id
         enable-ssl-passthrough: ""
       config:
         proxy-buffer-size: 64k

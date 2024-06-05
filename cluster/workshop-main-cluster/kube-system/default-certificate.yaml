@@ -1,0 +1,14 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: default-workload-id
+  namespace: kube-system
+spec:
+  issuerRef:
+    name: default
+    kind: ClusterIssuer
+  secretName: default-workload-id
+  commonName: "*.workload-id.chr-fritz.de"
+  dnsNames:
+    - "workload-id.chr-fritz.de"
+    - "*.workload-id.chr-fritz.de"
