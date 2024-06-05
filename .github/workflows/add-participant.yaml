@@ -1,0 +1,52 @@
+name: "PR: Add Participant"
+
+on:
+  pull_request_target:
+    paths:
+      - cluster/workshop-main-cluster/participants/participant-*.yaml
+  workflow_dispatch:
+    inputs:
+      participant:
+        required: true
+        description: The github user name of the participant.
+
+jobs:
+  add-participant:
+    permissions:
+      contents: read
+      id-token: write
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Git clone the repository
+        uses: actions/checkout@v4
+
+      - name: setup vcluster
+        run: |
+          curl -L -o vcluster "https://github.com/loft-sh/vcluster/releases/download/v0.20.0-beta.1/vcluster-linux-amd64" \
+          && sudo install -c -m 0755 vcluster /usr/local/bin \
+          && rm -f vcluster
+
+      - name: Setup Flux CLI
+        uses: fluxcd/flux2/action@main
+
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: arn:aws:iam::${{vars.AWS_ACCOUNT_ID}}:role/gh-action-add-participant
+          role-session-name: gh-action-add-participant
+          aws-region: eu-central-1
+
+      - name: update-kube-config
+        run: |
+          aws eks update-kubeconfig \
+              --name cloudland-main-cluster \
+              --alias cloudland-main-cluster
+          
+          kubectl config use-context cloudland-main-cluster
+          kubectl auth whoami
+
+      - name: setup participant cluster
+        run: ./setup-participant.sh "${{github.event.pull_request.user}}" "${{inputs.participant}}"
+        working-directory: ./utils
