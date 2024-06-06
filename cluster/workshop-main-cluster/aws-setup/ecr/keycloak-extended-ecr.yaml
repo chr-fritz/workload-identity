@@ -1,0 +1,8 @@
+apiVersion: ecr.aws.upbound.io/v1beta1
+kind: Repository
+metadata:
+  name: keycloak-extended
+spec:
+  forProvider:
+    imageTagMutability: MUTABLE
+    region: eu-central-1

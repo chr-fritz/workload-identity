@@ -1,0 +1,58 @@
+name: Docker image build and publish
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - infrastructure/images/keycloak-extended/*
+  workflow_dispatch: { }
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write
+      contents: read
+      packages: read
+
+    env:
+      KUBERNETES_AUTHENTICATOR_VERSION: v0.1.0
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::${{ vars.AWS_ACCOUNT_ID }}:role/gh-action-build-images
+          aws-region: eu-central-1
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+        with:
+          registries: ${{ inputs.aws_account_id }}
+          mask-password: "true" # see: https://github.com/aws-actions/amazon-ecr-login#docker-credentials
+
+      - name: Download Additional Providers
+        run: |-
+          set -uo pipefail -o functrace -o xtrace
+          wget --header="Authorization: token ${{github.token}}" -O ./infrastructure/images/keycloak-extended/keycloak-kubernetes-authenticator.jar \
+            https://maven.pkg.github.com/chr-fritz/keycloak-kubernetes-authenticator/de.chrfritz.keycloak.authenticators/keycloak-kubernetes-authenticator/$KUBERNETES_AUTHENTICATOR_VERSION/keycloak-kubernetes-authenticator-$KUBERNETES_AUTHENTICATOR_VERSION.jar
+          
+          ls -la $(pwd)/infrastructure/images/keycloak-extended
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build image image
+        uses: docker/build-push-action@v5
+        with:
+          platforms: linux/amd64,linux/arm64
+          tags: 730335410257.dkr.ecr.eu-central-1.amazonaws.com/keycloak-extended:latest
+          context: ./infrastructure/images/keycloak-extended
+          push: true

@@ -1,0 +1,33 @@
+apiVersion: iam.aws.upbound.io/v1beta1
+kind: Role
+metadata:
+  name: gh-action-build-images
+spec:
+  forProvider:
+    assumeRolePolicy: |
+      {
+          "Version": "2012-10-17",
+          "Statement": [
+              {
+                  "Effect": "Allow",
+                  "Action": "sts:AssumeRoleWithWebIdentity",
+                  "Principal": {
+                      "Federated": "arn:aws:iam::730335410257:oidc-provider/token.actions.githubusercontent.com"
+                  },
+                  "Condition": {
+                      "StringEquals": {
+                          "token.actions.githubusercontent.com:aud": [
+                              "sts.amazonaws.com"
+                          ]
+                      },
+                      "StringLike": {
+                          "token.actions.githubusercontent.com:sub": [
+                              "repo:chr-fritz/workload-identity:*"
+                          ]
+                      }
+                  }
+              }
+          ]
+      }
+    managedPolicyArns:
+      - arn:aws:iam::aws:policy/EC2InstanceProfileForImageBuilderECRContainerBuilds
