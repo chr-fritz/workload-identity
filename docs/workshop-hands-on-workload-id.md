@@ -1,6 +1,7 @@
 # Hands on: Workload Identity - Wie wird man statische Zugangsdaten los?
 
 <!-- TOC -->
+
 * [Hands on: Workload Identity - Wie wird man statische Zugangsdaten los?](#hands-on-workload-identity---wie-wird-man-statische-zugangsdaten-los)
     * [Einführung](#einführung)
         * [Infrastruktur](#infrastruktur)
@@ -12,6 +13,7 @@
         * [Client anlegen](#client-anlegen)
         * [Audience für Backend-Service hinzufügen](#audience-für-backend-service-hinzufügen)
     * [Abschluss](#abschluss)
+
 <!-- TOC -->
 
 ## Einführung
@@ -70,7 +72,7 @@ Cluster.
 
 Das folgende Bild zeigt die gesamte Infrastruktur mit allen Komponenten am Ende des Workshops:
 
-**TODO: BILD**
+![Workload ID Infrastruktur](infra.jpg)
 
 ## Schritt 1: Teilnehmer Cluster erstellen
 
