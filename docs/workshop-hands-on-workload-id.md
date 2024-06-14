@@ -192,28 +192,44 @@ Administrationsoberfläche [^3] geschehen.
 
 ### Client anlegen
 
-Beim Anlegen des Clients für den Middleware-Services kann in den meisten Teilen der Keycloak Dokumentation gefolgt
+Beim Anlegen des Clients für den Middleware-Service kann in den meisten Teilen der Keycloak Dokumentation gefolgt
 werden. Da die Client-Authentifizierung nicht wie üblich per ClientID und ClientSecret durchgeführt werden soll, müssen
 einige Vorgaben welche
 der [Keycloak Kubernetes Client Authenticator](https://github.com/chr-fritz/keycloak-kubernetes-authenticator) macht
 beachtet werden.
 
 1. In der Client-Beschreibung den Service-Account Namen gefolgt
-   von `@https://oidc.eks.eu-central-1.amazonaws.com/id/16863A4F160277A9C0E1AC5E63C373EB` eintragen:
+   von `@https://kubernetes.default.svc.cluster.local` eintragen:
    ```
-   system:serviceaccount:<k8s-namespace>:<serviceAccountName>@https://oidc.eks.eu-central-1.amazonaws.com/id/16863A4F160277A9C0E1AC5E63C373EB 
+   system:serviceaccount:demo:middleware-server@https://kubernetes.default.svc.cluster.local 
    ```
-   **TODO:** Tatsächlichen Service Account Namen herausfinden (vCluster vs. EKS)
 2. Unter "Credentials" den Client Authenticator "Kubernetes Service Account auswählen"
 3. Unter "Keys" "Use JWKS URL" einschalten und folgende "JWKS URL" hinterlegen:
    ```
-   https://oidc.eks.eu-central-1.amazonaws.com/id/16863A4F160277A9C0E1AC5E63C373EB/keys
+   https://kubernetes.default/openid/v1/jwks
    ```
+
+Im Falle eines EKS Clusters würde die Issuer-URL in etwa so aussehen:
+
+```
+https://oidc.eks.eu-central-1.amazonaws.com/id/...
+```
 
 Darüber hinaus muss die Redirect-URL korrekt gesetzt sein. Empfehlung ist hier entweder die vollständige zu verwenden
 oder eine Wildcard auf den Hostnamen des Ingresses inkl. `https://`.
 
-Nun sollte beim Aufruf des Middleware-Services der Login über Keycloak klappen.
+Nun sollte beim Aufruf des Middleware-Services
+über `https://middleware-server-<YOUR-GITHUB-USERNAME>.workload-id.chr-fritz.de/hello` der Login über Keycloak klappen.
+
+### ClusterRoleBinding für Kubernetes JWKs anlegen
+
+Während EKS in den meisten Fällen die OpenID Connect Konfiguration und die zur Signatur verwendeten Public Keys ohne
+zusätzliche Konfiguration veröffentlicht, müssen in den vCluster Instanzen diese erst freigeschaltet werden.
+
+Hierzu ist es notwendig ein neues ClusterRoleBinding[^4] anzulegen, welches den beiden Gruppen `system:unauthenticated`
+und `system:authenticated` Zugriff auf die Cluster Rolle `system:service-account-issuer-discovery` gibt.
+
+Ein Beispiel findet sich im Demo Cluster.
 
 ### Audience für Backend-Service hinzufügen
 
