@@ -7,3 +7,4 @@ resources:
   - namespace.yaml
   - bitnami-helmrepo.yaml
   - keycloak-helmrelease.yaml
+  - oidc-viewer-clusterrolebinding.yaml
