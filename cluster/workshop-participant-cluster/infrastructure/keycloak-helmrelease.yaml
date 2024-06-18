@@ -3,6 +3,12 @@ kind: HelmRelease
 metadata:
   name: keycloak
 spec:
+  chart:
+    spec:
+      chart: keycloak
+      sourceRef:
+        name: bitnami
+        kind: HelmRepository
   interval: 1m
   install:
     disableWait: true
@@ -25,6 +31,8 @@ spec:
       adminPassword: admin
     proxy: edge
     extraEnvVars:
+      - name: KEYCLOAK_SPI_TRUSTSTORE_FILE_HOSTNAME_VERIFICATION_POLICY
+        value: ANY
       - name: KC_HOSTNAME_URL
         value: https://keycloak-template.workload-id.chr-fritz.de
     ingress:
@@ -35,3 +43,4 @@ spec:
       ingressClassName: nginx
       secrets:
         - name: none
+    extraStartupArgs: "--debug"

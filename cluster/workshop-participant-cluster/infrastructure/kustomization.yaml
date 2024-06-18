@@ -1,0 +1,9 @@
+commonLabels:
+  app.kubernetes.io/part-of: workload-id-talk-demo
+
+namespace: demo
+
+resources:
+  - namespace.yaml
+  - bitnami-helmrepo.yaml
+  - keycloak-helmrelease.yaml
