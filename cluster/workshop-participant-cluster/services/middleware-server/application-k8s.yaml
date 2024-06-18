@@ -2,9 +2,9 @@ hello:
   backend:
     # We want to use the cluster internal URL:
     url: http://backend-service.demo/hello
-#oauth2:
-#  serviceAccountTokenPath: /<base path of volume mount>/workload-id
-#  useKubernetesServiceAccount: true
+oauth2:
+  serviceAccountTokenPath: /var/run/secrets/kubernetes.io/keycloak/workload-id
+  useKubernetesServiceAccount: true
 server:
   error:
     include-message: always
@@ -15,18 +15,18 @@ logging:
     org.springframework.security.web.authentication.AnonymousAuthenticationFilter: WARN
     reactor.netty.http.client.HttpClient: DEBUG
 spring:
-#  security:
-#    oauth2:
-#      client:
-#        provider:
-#          keycloak:
-#            issuer-uri: https://keycloak-template.workload-id.chr-fritz.de/realms/master
-#        registration:
-#          keycloak:
-#            client-authentication-method: none
-#            provider: keycloak
-#            client-id: "middleware-server"
-#            client-secret: "not-needed-use-serviceaccount-token"
-#            scope:
-#              - openid
-#              - profile
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuer-uri: https://keycloak-template.workload-id.chr-fritz.de/realms/master
+        registration:
+          keycloak:
+            client-authentication-method: none
+            provider: keycloak
+            client-id: "middleware-server"
+            client-secret: "not-needed-use-serviceaccount-token"
+            scope:
+              - openid
+              - profile

@@ -56,8 +56,7 @@ spec:
             - name: app-config
               mountPath: /config/
             - name: workload-id-token
-              #mountPath: /var/run/secrets/kubernetes.io/keycloak/
-              mountPath: <base path for access token>
+              mountPath: /var/run/secrets/kubernetes.io/keycloak/
       volumes:
         - name: app-config
           configMap:
@@ -70,4 +69,6 @@ spec:
           projected:
             sources:
               - serviceAccountToken:
-                # fill projected volume mount
+                  path: workload-id
+                  expirationSeconds: 900
+                  audience: "https://keycloak-template.workload-id.chr-fritz.de/realms/master"
