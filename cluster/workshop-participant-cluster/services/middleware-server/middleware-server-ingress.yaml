@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: middleware-server
+  namespace: demo
+spec:
+  rules:
+    - host: middleware-server-template.workload-id.chr-fritz.de
+      http:
+        paths:
+          - backend:
+              service:
+                name: middleware-server
+                port:
+                  name: http
+            pathType: Prefix
+            path: /
+  tls:
+    - secretName: dummy-as-we-use-main-cluster-default-cert
+      hosts:
+        - middleware-server-template.workload-id.chr-fritz.de

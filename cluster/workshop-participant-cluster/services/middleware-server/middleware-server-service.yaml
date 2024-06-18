@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: middleware-server
+  namespace: demo
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+      name: http
+      targetPort: http
+      protocol: TCP
+  selector:
+    app: middleware-server

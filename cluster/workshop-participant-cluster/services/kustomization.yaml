@@ -5,3 +5,4 @@ namespace: demo
 
 resources:
   - backend-service
+  - middleware-server

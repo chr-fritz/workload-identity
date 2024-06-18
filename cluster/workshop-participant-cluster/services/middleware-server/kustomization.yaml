@@ -1,0 +1,15 @@
+commonLabels:
+  app: middleware-server
+  app.kubernetes.io/instance: middleware-server
+  app.kubernetes.io/name: middleware-server
+
+resources:
+  - middleware-server-serviceaccount.yaml
+  - middleware-server-service.yaml
+  - middleware-server-ingress.yaml
+  - middleware-server-deployment.yaml
+
+configMapGenerator:
+  - name: middleware-server
+    files:
+      - application-k8s.yaml
