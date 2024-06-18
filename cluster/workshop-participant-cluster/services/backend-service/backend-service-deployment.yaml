@@ -19,14 +19,14 @@ spec:
           image: ghcr.io/chr-fritz/seclab-backend-service:latest
           imagePullPolicy: Always
           ports:
-          #            - containerPort: 8081
-          #              name: http-internal
-          #              protocol: TCP
+            - containerPort: 8081
+              name: http-internal
+              protocol: TCP
           env:
             - name: JWKS_URL
-              value:
+              value: http://keycloak.demo/realms/master/protocol/openid-connect/certs
             - name: ISSUER
-              value:
+              value: https://keycloak-template.workload-id.chr-fritz.de/realms/master
           startupProbe:
             httpGet:
               port: http-internal
