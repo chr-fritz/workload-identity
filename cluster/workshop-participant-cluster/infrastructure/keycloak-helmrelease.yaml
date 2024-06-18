@@ -1,0 +1,37 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: keycloak
+spec:
+  interval: 1m
+  install:
+    disableWait: true
+    disableWaitForJobs: true
+    crds: CreateReplace
+    timeout: 5m
+  upgrade:
+    disableWait: true
+    disableWaitForJobs: true
+    crds: CreateReplace
+    timeout: 5m
+  values:
+    image:
+      registry: 730335410257.dkr.ecr.eu-central-1.amazonaws.com
+      repository: keycloak-extended
+      tag: latest
+      pullPolicy: Always
+    auth:
+      adminUser: admin
+      adminPassword: admin
+    proxy: edge
+    extraEnvVars:
+      - name: KC_HOSTNAME_URL
+        value: https://keycloak-template.workload-id.chr-fritz.de
+    ingress:
+      enabled: true
+      hostname: keycloak-template.workload-id.chr-fritz.de
+      tls: true
+      selfSigned: false
+      ingressClassName: nginx
+      secrets:
+        - name: none
