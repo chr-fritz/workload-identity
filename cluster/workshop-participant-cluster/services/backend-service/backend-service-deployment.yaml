@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-service
+  labels:
+    app: backend-service
+spec:
+  selector:
+    matchLabels:
+      app: backend-service
+  template:
+    metadata:
+      labels:
+        app: backend-service
+    spec:
+      serviceAccountName: backend-service
+      containers:
+        - name: backend-service
+          image: ghcr.io/chr-fritz/seclab-backend-service:latest
+          imagePullPolicy: Always
+          ports:
+          #            - containerPort: 8081
+          #              name: http-internal
+          #              protocol: TCP
+          env:
+            - name: JWKS_URL
+              value:
+            - name: ISSUER
+              value:
+          startupProbe:
+            httpGet:
+              port: http-internal
+              path: /health
+            periodSeconds: 5
+            successThreshold: 1
+            failureThreshold: 10
+            timeoutSeconds: 2
+          readinessProbe:
+            httpGet:
+              port: http-internal
+              path: /health
+            periodSeconds: 5
+            successThreshold: 1
+            failureThreshold: 2
+            timeoutSeconds: 2
+          livenessProbe:
+            httpGet:
+              port: http-internal
+              path: /health
+            periodSeconds: 5
+            successThreshold: 1
+            failureThreshold: 10
+            timeoutSeconds: 5
