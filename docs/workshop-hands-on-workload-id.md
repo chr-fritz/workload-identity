@@ -226,7 +226,7 @@ Nun sollte beim Aufruf des Middleware-Services
 Während EKS in den meisten Fällen die OpenID Connect Konfiguration und die zur Signatur verwendeten Public Keys ohne
 zusätzliche Konfiguration veröffentlicht, müssen in den vCluster Instanzen diese erst freigeschaltet werden.
 
-Hierzu ist es notwendig ein neues ClusterRoleBinding[^4] anzulegen, welches den beiden Gruppen `system:unauthenticated`
+Hierzu ist es notwendig ein neues ClusterRoleBinding [^4] anzulegen, welches den beiden Gruppen `system:unauthenticated`
 und `system:authenticated` Zugriff auf die Cluster Rolle `system:service-account-issuer-discovery` gibt.
 
 Ein Beispiel findet sich im Demo Cluster.
@@ -254,7 +254,7 @@ dem [aws-advanced-jdbc-wrapper](https://github.com/aws/aws-advanced-jdbc-wrapper
 Datenbanken an. Allerdings ist das Setup leider nicht vollständig as-Code fähig so, dass es im Workshop nicht umgesetzt
 wurde.
 
-[^1]: GitHub Dokumentation:
-[Erstellen eines PR](https://docs.github.com/de/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request)
+[^1]: [GitHub Dokumentation: Erstellen eines PR](https://docs.github.com/de/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request)
 [^2]: [Launch a Pod using service account token projection](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#launch-a-pod-using-service-account-token-projection)
 [^3]: [Managing OpenID Connect and SAML Clients](https://www.keycloak.org/docs/latest/server_admin/#assembly-managing-clients_server_administration_guide)
+[^4]: [Kubernetes Documentation ClusterRoleBinding](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#clusterrolebinding-example)
