@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: participant-cpoyatos
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: participant-cpoyatos
+  namespace: participant-cpoyatos
+spec:
+  chart:
+    spec:
+      chart: vcluster
+      version: 0.20.0-beta.5
+      sourceRef:
+        name: vcluster
+        kind: HelmRepository
+        namespace: vcluster-system
+  interval: 10m
+  install:
+    crds: CreateReplace
+    timeout: 5m
+  upgrade:
+    crds: CreateReplace
+    timeout: 5m
+  values:
+    controlPlane:
+      distro:
+        k3s:
+          enabled: true
+      ingress:
+        enabled: true
+        host: vcluster-cpoyatos.workload-id.chr-fritz.de
+      proxy:
+        extraSANs:
+          - vcluster-cpoyatos.workload-id.chr-fritz.de
+    sync:
+      toHost:
+        ingresses:
+          enabled: true
+        serviceAccounts:
+          enabled: true
