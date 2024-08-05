@@ -5,18 +5,13 @@
 
 version: 2
 updates:
-  - package-ecosystem: "gomod" # See documentation for possible values
-    directory: "/" # Location of package manifests
-    schedule:
-      interval: "weekly"
-    open-pull-requests-limit: 10
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
   - package-ecosystem: "gradle"
-    directory: "/"
+    directory: "/services/middleware-server"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
