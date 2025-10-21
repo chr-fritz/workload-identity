@@ -85,8 +85,8 @@ spec:
             sources:
               - serviceAccountToken:
                   path: workload-id
-                  expirationSeconds: 900
-                  audience: "https://keycloak-192-168-107-4.nip.io/realms/master"
+                  expirationSeconds: 600
+                  audience: "http://keycloak-192-168-107-4.nip.io/auth/realms/master"
         - name: truststore
           emptyDir: { }
         - name: ca-certificates
@@ -97,8 +97,8 @@ spec:
                   items:
                     - key: ca.crt
                       path: k8s-ca.crt
-              - secret:
-                  name: keycloak-192-168-107-4.nip.io-tls
-                  items:
-                    - key: ca.crt
-                      path: keycloak-ca.crt
+#              - secret:
+#                  name: keycloak-192-168-107-4.nip.io-tls
+#                  items:
+#                    - key: ca.crt
+#                      path: keycloak-ca.crt

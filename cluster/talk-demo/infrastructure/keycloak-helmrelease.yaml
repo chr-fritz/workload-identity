@@ -5,10 +5,9 @@ metadata:
 spec:
   chart:
     spec:
-      chart: keycloak
-      version: '24.0.4'
+      chart: keycloakx
       sourceRef:
-        name: bitnami
+        name: codecentric
         kind: HelmRepository
   interval: 1m
   install:
@@ -22,17 +21,15 @@ spec:
     crds: CreateReplace
     timeout: 5m
   values:
-    auth:
-      adminUser: admin
-      adminPassword: admin
-    initContainers:
-      - name: kubernetes-authenticator
-        image: ghcr.io/chr-fritz/keycloak-kubernetes-authenticator:dev-main
-        imagePullPolicy: Always
-        volumeMounts:
-          - name: providers
-            mountPath: /opt/keycloak/providers
-            readOnly: false
+    image:
+      tag: "26.4"
+    command:
+      - "/opt/keycloak/bin/kc.sh"
+      - "start"
+      - "--http-port=8080"
+      - "--hostname-strict=false"
+      - "--debug"
+    extraInitContainers: |
       - name: truststore-creator
         image: ghcr.io/chr-fritz/java-trust-store-builder:latest
         imagePullPolicy: Always
@@ -43,8 +40,7 @@ spec:
           - name: ca-certificates
             mountPath: /ca-certs
             readOnly: true
-    proxy: edge
-    extraEnvVars:
+    extraEnv: |
       - name: KEYCLOAK_SPI_TRUSTSTORE_FILE
         value: /truststore/truststore.jks
       - name: KEYCLOAK_SPI_TRUSTSTORE_PASSWORD
@@ -52,23 +48,28 @@ spec:
       - name: KEYCLOAK_SPI_TRUSTSTORE_FILE_HOSTNAME_VERIFICATION_POLICY
         value: ANY
       - name: KC_HOSTNAME_URL
-        value: https://keycloak-192-168-107-4.nip.io
+        value: http://keycloak-192-168-107-4.nip.io
+      - name: KC_BOOTSTRAP_ADMIN_USERNAME
+        value: admin
+      - name: KC_BOOTSTRAP_ADMIN_PASSWORD
+        value: admin
+      - name: KC_FEATURES
+        value: account-api,admin-api,authorization,ciba,client-policies,device-flow,dpop,impersonation,opentelemetry,organization,par,passkeys,persistent-user-sessions,recovery-codes,step-up-authentication,update-email,user-event-metrics,web-authn,client-auth-federated,kubernetes-service-accounts
     ingress:
       enabled: true
       hostname: keycloak-192-168-107-4.nip.io
-      tls: true
-      selfSigned: true
-    extraStartupArgs: "--debug"
-    extraVolumeMounts:
+      rules:
+        - # Ingress host
+          host: 'keycloak-192-168-107-4.nip.io'
+          # Paths for the host
+          paths:
+            - path: '/auth/'
+              pathType: Prefix
+    extraVolumeMounts: |
       - name: truststore
         mountPath: /truststore
         readOnly: true
-      - name: providers
-        mountPath: /opt/bitnami/keycloak/providers
-        readOnly: true
-    extraVolumes:
-      - name: providers
-        emptyDir: { }
+    extraVolumes: |
       - name: truststore
         emptyDir: { }
       - name: ca-certificates

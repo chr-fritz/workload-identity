@@ -19,7 +19,7 @@ spring:
       client:
         provider:
           keycloak:
-            issuer-uri: https://keycloak-192-168-107-4.nip.io/realms/master
+            issuer-uri: http://keycloak-192-168-107-4.nip.io/auth/realms/master
         registration:
           keycloak:
             client-authentication-method: none

@@ -27,18 +27,17 @@
 
 https://keycloak-192-168-107-4.nip.io/
 
-1. Setup `client-with-k8s` authentication flow:
-    1. Copy the `clients` authentication flow
-    2. Add `kubernetes-authenticator` and set requirement to `Alternative`
-    3. Bind to the `Client authentication flow`
+1. Add a new identity provider of type "kubernetes" with alias `kubernetes.default.svc.cluster.local` and jwks url
+   `https://kubernetes.default/openid/v1/jwks`.
 2. Add Keycloak Client:
     * Client ID: `middleware-server`
     * Name: `Middleware-Server`
     * Root & Home URL: `http://middleware-server-192-168-107-4.nip.io/`
     * Callback URL: `http://middleware-server-192-168-107-4.nip.io/*`
-    * Description: `system:serviceaccount:demo:middleware-server@https://kubernetes.default.svc.cluster.local`
-    * JWKS URL: `https://kubernetes.default/openid/v1/jwks`
-    * Credentials Type: `Kubernetes Service Account`
+   * Credentials:
+       * Credentials Type: `Signed JWT - Federated`
+       * Identity Provider `kubernetes.default.svc.cluster.local` (alias from above)
+       * Federated subject  `system:serviceaccount:demo:middleware-server`
 
 ## Finale
 

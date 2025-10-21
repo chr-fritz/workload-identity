@@ -6,5 +6,5 @@ namespace: demo
 resources:
   - oidc-viewer-clusterrolebinding.yaml
   - namespace.yaml
-  - bitnami-helmrepo.yaml
+  - codecentric-helmrepo.yaml
   - keycloak-helmrelease.yaml
