@@ -10,8 +10,16 @@ updates:
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
+    cooldown:
+      default-days: 14
+
   - package-ecosystem: "gradle"
     directory: "/services/middleware-server"
     schedule:
-      interval: "weekly"
-    open-pull-requests-limit: 10
+      interval: "daily"
+    open-pull-requests-limit: 15
+    cooldown:
+      default-days: 14
+      semver-major-days: 14
+      semver-minor-days: 7
+      semver-patch-days: 3
