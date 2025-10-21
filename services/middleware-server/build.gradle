@@ -25,7 +25,7 @@ dependencies {
     implementation 'org.springframework:spring-webflux'
     implementation 'io.projectreactor.netty:reactor-netty'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.apache.httpcomponents.client5:httpclient5:5.5'
+    implementation 'org.apache.httpcomponents.client5:httpclient5:5.5.1'
     implementation 'com.nimbusds:oauth2-oidc-sdk:11.28'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
