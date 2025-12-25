@@ -20,7 +20,7 @@ jobs:
 
     steps:
       - name: Git clone the repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: setup vcluster
         run: |
