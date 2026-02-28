@@ -35,27 +35,27 @@ public class SecurityConfiguration {
 
     @Bean
     public OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> authorizationCodeAccessTokenResponseClient() {
-        DefaultAuthorizationCodeTokenResponseClient responseClient = new DefaultAuthorizationCodeTokenResponseClient();
+        RestClientAuthorizationCodeTokenResponseClient responseClient = new RestClientAuthorizationCodeTokenResponseClient();
         if (configProperties.isUseKubernetesServiceAccount()) {
-            responseClient.setRequestEntityConverter(new K8sOAuth2AuthorizationCodeGrantRequestEntityConverter(configProperties.getServiceAccountTokenPath()));
+            responseClient.addParametersConverter(new K8sOAuth2AssertionParametersConverter<>(configProperties.getServiceAccountTokenPath()));
         }
         return responseClient;
     }
 
     @Bean
     public OAuth2AccessTokenResponseClient<OAuth2RefreshTokenGrantRequest> refreshTokenAccessTokenResponseClient() {
-        DefaultRefreshTokenTokenResponseClient responseClient = new DefaultRefreshTokenTokenResponseClient();
+        RestClientRefreshTokenTokenResponseClient responseClient = new RestClientRefreshTokenTokenResponseClient();
         if (configProperties.isUseKubernetesServiceAccount()) {
-            responseClient.setRequestEntityConverter(new K8sOAuth2RefreshTokenGrantRequestEntityConverter(configProperties.getServiceAccountTokenPath()));
+            responseClient.addParametersConverter(new K8sOAuth2AssertionParametersConverter<>(configProperties.getServiceAccountTokenPath()));
         }
         return responseClient;
     }
 
     @Bean
     public OAuth2AccessTokenResponseClient<OAuth2ClientCredentialsGrantRequest> clientCredentialsAccessTokenResponseClient() {
-        DefaultClientCredentialsTokenResponseClient responseClient = new DefaultClientCredentialsTokenResponseClient();
+        RestClientClientCredentialsTokenResponseClient responseClient = new RestClientClientCredentialsTokenResponseClient();
         if (configProperties.isUseKubernetesServiceAccount()) {
-            responseClient.setRequestEntityConverter(new K8sOAuth2ClientCredentialsGrantRequestEntityConverter(configProperties.getServiceAccountTokenPath()));
+            responseClient.addParametersConverter(new K8sOAuth2AssertionParametersConverter<>(configProperties.getServiceAccountTokenPath()));
         }
         return responseClient;
     }
