@@ -20,7 +20,7 @@ jobs:
       KUBERNETES_AUTHENTICATOR_VERSION: v0.1.0
 
     steps:
-      - uses: actions/checkout@v6.0.2
+      - uses: actions/checkout@v6.0.3
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v6.2.0
